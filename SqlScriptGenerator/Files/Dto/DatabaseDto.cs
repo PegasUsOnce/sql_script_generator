@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace SqlScriptGenerator.Serializer.Dto
+namespace SqlScriptGenerator.Files.Dto
 {
-    internal class Database
+    internal class DatabaseDto
     {
         [JsonProperty("name")]
         public string Name { get; set; }

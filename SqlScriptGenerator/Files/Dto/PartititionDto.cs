@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace SqlScriptGenerator.Serializer.Dto
+namespace SqlScriptGenerator.Files.Dto
 {
-    internal class Partitition
+    internal class PartititionDto
     {
         [JsonProperty("function")]
         public string Function { get; set; }
