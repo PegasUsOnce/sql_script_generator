@@ -1,0 +1,31 @@
+﻿{
+  "databases": 
+  [
+    {
+      "name": "db1",
+      "location": "C://folder1"
+    },
+    {
+      "name": "db2",
+      "location": "C://folder2"
+    },
+    {
+      "name": "db3",
+      "location": "C://folder3"
+    },
+    {
+      "name": "db4",
+      "location": "C://folder4"
+    }
+  ],
+  "partitition": 
+  {
+    "function": "partitition_function",
+    "schemes": 
+    [
+      "scheme_1",
+      "scheme_2",
+      "scheme_3"
+    ]
+  }
+}

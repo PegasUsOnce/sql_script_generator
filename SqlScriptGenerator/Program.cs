@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SqlScriptGenerator.Files;
+using SqlScriptGenerator.Serializer.Dto;
+using System;
 
 namespace SqlScriptGenerator
 {
@@ -6,7 +9,9 @@ namespace SqlScriptGenerator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            const string configPath = "config.json";
+            var config = FileManager.Read<Config>(configPath);
+            Console.WriteLine(JsonConvert.SerializeObject(config));
         }
     }
 }
