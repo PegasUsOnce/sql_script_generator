@@ -33,7 +33,7 @@ namespace SqlScriptGenerator.Partitition
         {
             var currentDate = DateTime.Now;
             var dates = Enumerable.Range(0, _quantity)
-                .Select(x => new DateTime(currentDate.Year, currentDate.Month, x == 0 ? _specialFirstDay : 1))
+                .Select(x => new DateTime(currentDate.Year + (x / 12), currentDate.Month + (x % 12), x == 0 ? _specialFirstDay : 1))
                 .ToArray();
 
             var result = new List<Script>(_databases.Count);
@@ -71,7 +71,7 @@ namespace SqlScriptGenerator.Partitition
             sb.AppendLine($"ADD FILE");
             sb.AppendLine("(");
             sb.AppendLine($"    NAME = {fileGroupName},");
-            sb.AppendLine($"    FILENAME = N'{database.Location}/{database.Name}_{fileGroupName}.ndf',");
+            sb.AppendLine($"    FILENAME = N'{database.Location}\\{database.Name}_{fileGroupName}.ndf',");
             sb.AppendLine($"    SIZE = 8192KB,");
             sb.AppendLine($"    MAXSIZE = UNLIMITED,");
             sb.AppendLine($"    FILEGROWTH = 50MB");
@@ -88,10 +88,10 @@ namespace SqlScriptGenerator.Partitition
             var fileName = $"Period_{date.Year}_{date.Month}";
 
             foreach (var scheme in partitition.Schemes)
-                sb.AppendLine($"ALTER PARTITION SCHEME[{scheme}] NEXT USED[{fileName}];");
+                sb.AppendLine($"ALTER PARTITION SCHEME [{scheme}] NEXT USED [{fileName}];");
 
             sb.AppendLine("GO");
-            sb.AppendLine($"ALTER PARTITION FUNCTION {partitition.Function}() SPLIT RANGE(N'2{date.Year}-{date.Month}-{date.Day}T00:00:00.000');");
+            sb.AppendLine($"ALTER PARTITION FUNCTION {partitition.Function}() SPLIT RANGE (N'{date.Year}-{date.Month.ToString("00")}-{date.Day.ToString("00")}T00:00:00.000');");
             sb.AppendLine("GO");
             sb.AppendLine("");
 
