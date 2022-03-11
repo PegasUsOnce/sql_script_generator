@@ -11,29 +11,24 @@ namespace SqlScriptGenerator.Partitition
     {
         private readonly PartititionDto _partitition;
         private readonly ICollection<DatabaseDto> _databases;
-        private readonly int _quantity;
-        private readonly int _specialFirstDay;
 
-        public PartititionScriptGenerator(
-            PartititionDto partitition, 
-            ICollection<DatabaseDto> databases,
-            int quantity = 3, 
-            int specialFirstDay = 12)
+        public PartititionScriptGenerator(PartititionDto partitition, ICollection<DatabaseDto> databases)
         {
             _partitition = partitition;
             _databases = databases;
-            _quantity = quantity;
-            _specialFirstDay = specialFirstDay;
         }
 
         /// <summary>
         /// Генерирует скрипт: на один месяц одна файловая группа, один файл и одна секция
         /// </summary>
-        public ICollection<Script> Generate()
+        public ICollection<Script> Generate(int quantity, DateTime startDate)
         {
-            var currentDate = DateTime.Now;
-            var dates = Enumerable.Range(0, _quantity)
-                .Select(x => new DateTime(currentDate.Year + (x / 12), currentDate.Month + (x % 12), x == 0 ? _specialFirstDay : 1))
+            var dates = Enumerable.Range(1, quantity - 1)
+                .Select(x => new DateTime(
+                    startDate.Year + (int)((startDate.Month + x) / 13),
+                    (startDate.Month + x) % 13 + ((startDate.Month + x) / 13),
+                    1))
+                .Prepend(startDate)
                 .ToArray();
 
             var result = new List<Script>(_databases.Count);
