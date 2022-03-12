@@ -31,7 +31,7 @@ namespace SqlScriptGenerator
 
             interaction.Write(" - Введите количество месяцев для генерации скрипта:");
             var monthQuantity = interaction.ReadInt();
-            if (monthQuantity == 0 || monthQuantity > 13)
+            if (monthQuantity <= 0 || monthQuantity > 100)
             {
                 interaction.Write("Я так не умею!");
                 return;

@@ -2,7 +2,6 @@
 using SqlScriptGenerator.Files.Dto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace SqlScriptGenerator.Partitition
@@ -23,13 +22,7 @@ namespace SqlScriptGenerator.Partitition
         /// </summary>
         public ICollection<Script> Generate(int quantity, DateTime startDate)
         {
-            var dates = Enumerable.Range(1, quantity - 1)
-                .Select(x => new DateTime(
-                    startDate.Year + (int)((startDate.Month + x) / 13),
-                    (startDate.Month + x) % 13 + ((startDate.Month + x) / 13),
-                    1))
-                .Prepend(startDate)
-                .ToArray();
+            var dates = DateRangeGenerator.GenerateDatesByMonth(quantity, startDate);
 
             var result = new List<Script>(_databases.Count);
 
